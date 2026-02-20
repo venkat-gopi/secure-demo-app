@@ -1,0 +1,31 @@
+name: DevSecOps Security Gate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  security-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 🔎 SECRET SCAN
+      - name: Run Gitleaks Secret Scan
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          args: detect --source . --verbose
+
+      # 📦 DEPENDENCY SCAN
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Dependency Scan
+        run: npm audit --audit-level=high

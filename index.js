@@ -1,3 +1,3 @@
-const API_KEY = "sk_live_1234567890_SECRETKEY";
+const API_KEY = process.env.API_KEY;
 
-console.log("App started");
+console.log("App started safely");
